@@ -1,6 +1,8 @@
 package com.hotel.booking.Service;
 
 import com.hotel.booking.Dto.HotelDto;
+import com.hotel.booking.Dto.HotelInfoDto;
+import com.hotel.booking.Dto.RoomDto;
 import com.hotel.booking.Entity.Booking;
 import com.hotel.booking.Entity.Hotel;
 import com.hotel.booking.Entity.Room;
@@ -13,6 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.stereotype.Service;
+
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -88,6 +92,20 @@ public class HotelServiceImpl implements HotelService{
         for(Room room:hotel.getRooms()){
             inventoryService.initializeRoomForAYear(room);
         }
+    }
+
+    @Override
+    public HotelInfoDto getHotelInfoById(Long hotelId) {
+
+        Hotel hotel=hotelRepository.findById(hotelId)
+                .orElseThrow(()->new ResourceNotFoundException("hotel not found for id:"+hotelId));
+
+        HotelInfoDto hotelInfoDto=HotelInfoDto.builder()
+                .hotel(modelMapper.map(hotel,HotelDto.class))
+                .rooms(hotel.getRooms().stream().map((element) -> modelMapper.map(element, RoomDto.class)).collect(Collectors.toList()))
+                .build();
+
+        return hotelInfoDto;
     }
 
 

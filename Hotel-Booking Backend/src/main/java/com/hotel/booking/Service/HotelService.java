@@ -2,6 +2,7 @@ package com.hotel.booking.Service;
 
 
 import com.hotel.booking.Dto.HotelDto;
+import com.hotel.booking.Dto.HotelInfoDto;
 import com.hotel.booking.Entity.Booking;
 import com.hotel.booking.Entity.Hotel;
 
@@ -16,4 +17,6 @@ public interface HotelService {
     void deleteHOtelByid(Long id);
 
     void activateHotel(Long id);
+
+    HotelInfoDto getHotelInfoById(Long hotelId);
 }

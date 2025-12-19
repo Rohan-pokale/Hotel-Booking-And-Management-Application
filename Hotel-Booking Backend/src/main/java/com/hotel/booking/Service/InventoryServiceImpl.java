@@ -1,23 +1,29 @@
 package com.hotel.booking.Service;
 
+import com.hotel.booking.Dto.HotelDto;
 import com.hotel.booking.Dto.HotelSearchRequest;
+import com.hotel.booking.Entity.Hotel;
 import com.hotel.booking.Entity.Inventory;
 import com.hotel.booking.Entity.Room;
 import com.hotel.booking.Repository.InventoryRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.query.Page;
+import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class InventoryServiceImpl implements InventoryService{
+    private final ModelMapper modelMapper;
 
     private final InventoryRepository inventoryRepository;
 
@@ -50,8 +56,22 @@ public class InventoryServiceImpl implements InventoryService{
     }
 
     @Override
-    public Page searchHotels(HotelSearchRequest hotelSearchRequest) {
+    public Page<HotelDto> searchHotels(HotelSearchRequest hotelSearchRequest) {
+
+        Long  dateCount= ChronoUnit.DAYS.between
+                (hotelSearchRequest.getStartDate(),hotelSearchRequest.getEndDate())+1;
+
         Pageable pageable= PageRequest.of(hotelSearchRequest.getPage(),hotelSearchRequest.getSize());
 
+        Page<Hotel> hotelPage =inventoryRepository.findHotelsByAvailabelInventory(
+                hotelSearchRequest.getCity(),
+                hotelSearchRequest.getStartDate(),
+                hotelSearchRequest.getEndDate(),
+                hotelSearchRequest.getRoomCount(),
+                dateCount,
+                pageable
+                );
+
+        return hotelPage.map((element) -> modelMapper.map(element, HotelDto.class));
     }
 }
