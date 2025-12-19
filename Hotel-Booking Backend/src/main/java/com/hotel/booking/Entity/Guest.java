@@ -3,8 +3,7 @@ package com.hotel.booking.Entity;
 
 import com.hotel.booking.Entity.enums.Geneder;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Set;
@@ -12,6 +11,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Guest {
 
     @Id
