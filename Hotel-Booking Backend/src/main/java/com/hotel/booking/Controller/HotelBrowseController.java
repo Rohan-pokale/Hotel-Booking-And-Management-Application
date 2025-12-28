@@ -2,6 +2,7 @@ package com.hotel.booking.Controller;
 
 import com.hotel.booking.Dto.HotelDto;
 import com.hotel.booking.Dto.HotelInfoDto;
+import com.hotel.booking.Dto.HotelPriceDto;
 import com.hotel.booking.Dto.HotelSearchRequest;
 import com.hotel.booking.Service.HotelService;
 import com.hotel.booking.Service.InventoryService;
@@ -21,8 +22,8 @@ public class HotelBrowseController{
     private final HotelService hotelService;
 
     @GetMapping("/search")
-    public ResponseEntity<Page<HotelDto>> searchHotels(@RequestBody HotelSearchRequest hotelSearchRequest){
-        Page<HotelDto> page = inventoryService.searchHotels(hotelSearchRequest);
+    public ResponseEntity<Page<HotelPriceDto>> searchHotels(@RequestBody HotelSearchRequest hotelSearchRequest){
+        Page<HotelPriceDto> page = inventoryService.searchHotels(hotelSearchRequest);
         return ResponseEntity.ok(page);
     }
 
