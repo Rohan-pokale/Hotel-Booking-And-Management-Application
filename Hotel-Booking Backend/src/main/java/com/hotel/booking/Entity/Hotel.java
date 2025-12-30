@@ -2,6 +2,7 @@ package com.hotel.booking.Entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -44,7 +45,7 @@ public class Hotel {
     @Column(nullable = false)
     private boolean isActive;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
     private User owner;
 
     @OneToMany(mappedBy = "hotel")
