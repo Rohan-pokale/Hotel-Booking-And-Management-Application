@@ -58,6 +58,7 @@ public class InventoryServiceImpl implements InventoryService{
             inventoryRepository.deleteByRoom(room);
     }
 
+
     @Override
     public Page<HotelPriceDto> searchHotels(HotelSearchRequest hotelSearchRequest) {
 
